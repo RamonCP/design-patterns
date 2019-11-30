@@ -1,0 +1,23 @@
+.form {
+    width: 500px;
+    margin: 113px auto;
+    text-align: center;
+}
+
+ul {
+    list-style: none;
+    text-align: left;
+}
+
+input {
+    height: 38px;
+    border-radius: 4px;
+    border: 1px solid #aaa;
+    vertical-align: middle;
+    padding-left: 13px;
+}
+
+li {
+    border-bottom: 1px solid #aaa;
+    padding: 14px 0;
+}
