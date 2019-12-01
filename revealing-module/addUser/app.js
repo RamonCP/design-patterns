@@ -10,25 +10,35 @@ const people = (function(){
     $buttonAddUser.addEventListener('click', addUser)
     $inputNewUser.addEventListener('keyup', pressEnterToSave)
     
-    function addUser(){
-        users.push($inputNewUser.value)
-        renderList()
-    }
-
+    
     function pressEnterToSave(){
         if ( event.key == 'Enter' ) {
             addUser()
         }
     }
 
+    function discoverIndexLiElement(target){
+        const $li = target.parentElement
+        const usersUlToArray = document.querySelectorAll(`li`); 
+        let keyElement = 0
+        usersUlToArray.forEach(function(elem,key){
+            if ( elem == $li ) {
+                keyElement = key
+            }
+        })
+
+        return keyElement
+    }
+
     function buttonActionUserList(){
         const buttonDataValue = event.target.dataset.value
+        const keyElement = discoverIndexLiElement(event.target)
         if ( buttonDataValue == 'edit' ) {
-            editUser(event)
+            editUser(event,keyElement)
             return
         }
 
-        deleteUser(event)
+        deleteUser(event,keyElement)
         return
     }
 
@@ -40,8 +50,14 @@ const people = (function(){
         });
     }
 
-    function deleteUser(event){
-        console.log(event.target)
+    function addUser(){
+        users.push($inputNewUser.value)
+        renderList()
+    }
+
+    function deleteUser(event, key){
+        users.splice(key,1)
+        renderList()
     }
 
     function editUser(event){
@@ -49,27 +65,28 @@ const people = (function(){
     }
 
     function addToUlElement(){
-        for ( const k in users ) {
+        users.forEach(function(elem, key){
             const $li = document.createElement('li')
             const $liContent = `
-                    <span>${users[k]}</span>
+                    <span>${users[key]}</span>
                     <button class='btn btn-warning button-action' data-value='edit'>Edit</button>
                     <button class='btn btn-danger button-action' data-value='delete'>Delete</button>
                 `
 
             $li.innerHTML = $liContent
             $usersUl.append($li)
-        }
+        })
 
         eventListenerButtonsAction()
     }
 
-    function clearList(){
+    function clear(){
+        $inputNewUser.value = ''
         $usersUl.innerHTML = ''
     }
 
     function renderList(){
-        clearList()
+        clear()
         addToUlElement()
     }
 
